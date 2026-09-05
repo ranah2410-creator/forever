@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Arpu ❤️</title>
+<style>
+  :root{
+    --pink: #ff8fd6;
+    --purple: #a259ff;
+    --deep-purple: #3b0a5a;
+    --cream: #fff5fb;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body{
+    margin:0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: linear-gradient(160deg, #1a0630 0%, #3b0a5a 45%, #6a1b9a 100%);
+    color: var(--cream);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Floating hearts / petals */
+  .petal{
+    position: fixed;
+    top: -10%;
+    font-size: 22px;
+    color: var(--pink);
+    opacity: 0.7;
+    pointer-events: none;
+    animation: fall linear infinite;
+    z-index: 1;
+    text-shadow: 0 0 8px rgba(255,143,214,0.8);
+  }
+  @keyframes fall{
+    0%{ transform: translateY(0) rotate(0deg); opacity: 0; }
+    10%{ opacity: 0.8; }
+    100%{ transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  section{
+    min-height: 100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding: 60px 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Opening */
+  .opening h2{
+    font-size: 1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeIn 1.5s ease forwards 0.3s;
+  }
+  .opening .sub{
+    font-size: 1.05rem;
+    color: #e0c3ff;
+    opacity: 0;
+    animation: fadeIn 1.5s ease forwards 0.8s;
+    margin-bottom: 30px;
+  }
+  .opening h1{
+    font-size: 4.5rem;
+    margin: 10px 0;
+    background: linear-gradient(90deg, #ff8fd6, #d6a4ff, #ff8fd6);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 4s linear infinite, fadeIn 1.8s ease forwards 1.1s;
+    opacity: 0;
+    text-shadow: 0 0 40px rgba(162,89,255,0.4);
+  }
+  @keyframes shine{
+    to{ background-position: 200% center; }
+  }
+  .opening p.msg{
+    max-width: 560px;
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: #f3e6ff;
+    opacity: 0;
+    animation: fadeIn 1.8s ease forwards 1.6s;
+  }
+  .scroll-cta{
+    margin-top: 40px;
+    opacity: 0;
+    animation: fadeIn 1.8s ease forwards 2.2s;
+  }
+  .scroll-cta a{
+    color: var(--pink);
+    text-decoration: none;
+    border: 1px solid rgba(255,143,214,0.5);
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    transition: all 0.4s ease;
+    display:inline-block;
+  }
+  .scroll-cta a:hover{
+    background: rgba(255,143,214,0.15);
+    box-shadow: 0 0 25px rgba(255,143,214,0.5);
+    transform: translateY(-3px);
+  }
+
+  @keyframes fadeIn{
+    from{ opacity:0; transform: translateY(20px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  /* Music Player */
+  .player{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 50;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 10px 18px;
+    border-radius: 50px;
+    box-shadow: 0 0 20px rgba(162,89,255,0.3);
+  }
+  .player button{
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border:none;
+    color:white;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    font-size:1.1rem;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: 0 0 15px rgba(255,143,214,0.6);
+    transition: transform 0.3s ease;
+  }
+  .player button:hover{ transform: scale(1.1); }
+  .player span{
+    font-size:0.85rem;
+    color:#f3e6ff;
+    letter-spacing: 0.5px;
+  }
+
+  /* Chapter label */
+  .chapter-label{
+    font-size:0.85rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 8px;
+    opacity: 0.85;
+  }
+  .chapter-title{
+    font-size: 2.3rem;
+    margin-bottom: 50px;
+    color: #fff;
+    text-shadow: 0 0 25px rgba(162,89,255,0.5);
+  }
+
+  /* Memory cards */
+  .memory{
+    max-width: 480px;
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s ease;
+  }
+  .memory.visible{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .memory img{
+    width: 100%;
+    max-width: 420px;
+    border-radius: 18px;
+    box-shadow: 0 0 40px rgba(162,89,255,0.4), 0 0 0 1px rgba(255,255,255,0.08);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+  }
+  .memory img:hover{
+    transform: scale(1.03) rotate(-1deg);
+    box-shadow: 0 0 60px rgba(255,143,214,0.6);
+  }
+  .memory p{
+    margin-top: 18px;
+    font-style: italic;
+    color: #e9d5ff;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+  }
+
+  .quote{
+    max-width: 600px;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #ffd6f2;
+    line-height: 1.8;
+    margin: 20px auto;
+    text-shadow: 0 0 20px rgba(255,143,214,0.3);
+  }
+
+  .letter{
+    max-width: 620px;
+    font-size: 1.15rem;
+    line-height: 2;
+    color: #f3e6ff;
+    text-align: left;
+  }
+  .letter .name{
+    color: var(--pink);
+    font-weight: bold;
+  }
+
+  /* Shayari final section */
+  .shayari-box{
+    max-width: 600px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,143,214,0.3);
+    border-radius: 20px;
+    padding: 45px 35px;
+    margin: 30px 0 40px;
+    box-shadow: 0 0 50px rgba(162,89,255,0.35);
+  }
+  .shayari-box p{
+    font-size: 1.35rem;
+    line-height: 2.1;
+    font-style: italic;
+    color: #ffe3f7;
+    margin: 0;
+    text-shadow: 0 0 15px rgba(255,143,214,0.3);
+  }
+  .heart-final{
+    font-size: 2.5rem;
+    margin-top: 10px;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ transform: scale(1); }
+    50%{ transform: scale(1.15); }
+  }
+
+  footer{
+    padding: 30px;
+    text-align:center;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #c9a3ff;
+    opacity: 0.6;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (max-width: 600px){
+    .opening h1{ font-size: 3rem; }
+    .chapter-title{ font-size: 1.8rem; }
+    .shayari-box p{ font-size: 1.15rem; }
+    .player{ top: 12px; right: 12px; padding: 8px 12px; }
+    .player span{ display:none; }
+  }
+
+  /* Cursor heart trail */
+  .trail-heart{
+    position: fixed;
+    pointer-events: none;
+    font-size: 16px;
+    color: var(--pink);
+    z-index: 999;
+    animation: trailFade 1s ease forwards;
+    text-shadow: 0 0 10px rgba(255,143,214,0.9);
+  }
+  @keyframes trailFade{
+    0%{ opacity: 0.9; transform: translateY(0) scale(1); }
+    100%{ opacity: 0; transform: translateY(-30px) scale(0.6); }
+  }
+
+  /* Reasons flip cards */
+  .reasons-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    max-width: 560px;
+    width: 100%;
+  }
+  .reason-card{
+    perspective: 1000px;
+    height: 150px;
+    cursor: pointer;
+  }
+  .reason-inner{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(.4,.2,.2,1);
+    transform-style: preserve-3d;
+  }
+  .reason-card.flipped .reason-inner{
+    transform: rotateY(180deg);
+  }
+  .reason-front, .reason-back{
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 16px;
+    text-align:center;
+  }
+  .reason-front{
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,143,214,0.35);
+    font-size: 1rem;
+    color: #ffd6f2;
+    letter-spacing: 0.5px;
+  }
+  .reason-back{
+    background: linear-gradient(135deg, rgba(255,143,214,0.18), rgba(162,89,255,0.25));
+    border: 1px solid rgba(255,143,214,0.5);
+    transform: rotateY(180deg);
+    font-size: 0.95rem;
+    font-style: italic;
+    color: #fff5fb;
+    line-height: 1.5;
+    box-shadow: 0 0 30px rgba(255,143,214,0.35);
+  }
+  .reasons-hint{
+    font-size: 0.85rem;
+    color: #c9a3ff;
+    opacity: 0.75;
+    margin-top: 26px;
+  }
+
+  /* Typewriter letter */
+  .letter p{ min-height: 1.2em; }
+  .type-cursor{
+    display:inline-block;
+    width: 2px;
+    background: var(--pink);
+    margin-left: 2px;
+    animation: blink 0.8s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity: 0; } }
+
+  /* Will you section */
+  .will-you{
+    margin-top: 45px;
+  }
+  .will-you h3{
+    font-size: 1.4rem;
+    color: #ffd6f2;
+    margin-bottom: 25px;
+    font-weight: normal;
+    font-style: italic;
+  }
+  .will-btns{
+    position: relative;
+    display:flex;
+    gap: 24px;
+    justify-content:center;
+    align-items:center;
+    min-height: 90px;
+  }
+  .will-btns button{
+    font-family: 'Georgia', serif;
+    font-size: 1.05rem;
+    padding: 14px 34px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.3s ease;
+  }
+  #yesBtn{
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: #fff;
+    box-shadow: 0 0 20px rgba(255,143,214,0.6);
+  }
+  #yesBtn:hover{ transform: scale(1.08); box-shadow: 0 0 35px rgba(255,143,214,0.8); }
+  #noBtn{
+    background: rgba(255,255,255,0.08);
+    color: #e0c3ff;
+    border: 1px solid rgba(255,255,255,0.2);
+    position: relative;
+  }
+  .will-answer{
+    margin-top: 28px;
+    font-size: 1.15rem;
+    color: var(--pink);
+    opacity: 0;
+    font-style: italic;
+    transition: opacity 0.6s ease;
+  }
+  .will-answer.show{ opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="petals"></div>
+
+<div class="player">
+  <button id="playBtn" aria-label="Play song">▶</button>
+  <span id="songLabel">O Sanam</span>
+</div>
+<audio id="bgAudio" loop>
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<section class="opening">
+  <h2>✧ A little something for you ✧</h2>
+  <div class="sub">made with love, just for one person</div>
+  <h1>Arpu.</h1>
+  <p class="msg">
+    Some people become special without even trying.<br>
+    And somehow, you became one of those people for me.<br>
+    So I made this little corner of the internet just for you.
+  </p>
+  <div class="scroll-cta">
+    <a href="#memories">Open our little story ↓</a>
+  </div>
+</section>
+
+<section id="memories">
+  <div class="chapter-label">Chapter One · Memories</div>
+  <div class="chapter-title">You, in my favourite frames.</div>
+
+  <div class="memory">
+    <img src="photo1.png" alt="Arpu">
+    <p>A moment worth keeping.</p>
+  </div>
+
+  <div class="memory">
+    <img src="photo2.jpg" alt="Arpu">
+    <p>Just you being you.</p>
+  </div>
+
+  <div class="quote">
+    "Maybe some people are meant to become a beautiful part of your story."
+  </div>
+</section>
+
+<section id="reasons">
+  <div class="chapter-label">Chapter Two · Why You</div>
+  <div class="chapter-title">A few reasons, if you're wondering.</div>
+  <div class="reasons-grid">
+    <div class="reason-card">
+      <div class="reason-inner">
+        <div class="reason-front">Your smile</div>
+        <div class="reason-back">It somehow makes an ordinary day feel like a good one.</div>
+      </div>
+    </div>
+    <div class="reason-card">
+      <div class="reason-inner">
+        <div class="reason-front">The way you talk</div>
+        <div class="reason-back">I could listen to you for hours and never get bored.</div>
+      </div>
+    </div>
+    <div class="reason-card">
+      <div class="reason-inner">
+        <div class="reason-front">Your energy</div>
+        <div class="reason-back">You make even the smallest moments feel a little more alive.</div>
+      </div>
+    </div>
+    <div class="reason-card">
+      <div class="reason-inner">
+        <div class="reason-front">Being around you</div>
+        <div class="reason-back">It's the easiest, most comfortable feeling — like I don't have to try.</div>
+      </div>
+    </div>
+  </div>
+  <div class="reasons-hint">tap a card ✧</div>
+</section>
+
+<section>
+  <div class="chapter-label">Chapter Three · A Few Honest Words</div>
+  <div class="letter">
+    <p id="letterText"></p>
+  </div>
+</section>
+
+<section>
+  <div class="chapter-label">One Last Thing...</div>
+  <div class="shayari-box">
+    <p>
+      Teri hansi mein chhupi hai woh baat, jo lafzon mein kabhi keh na paaya,<br>
+      Har pal tere khayalon ne, mujhe khud se hi mila diya,<br>
+      Arpu, tu bas ek naam nahi, ek sukoon si ehsaas hai,<br>
+      Jisse mila jo mila, mera har din khaas ban gaya. ❤️
+    </p>
+  </div>
+  <div class="heart-final">❤️</div>
+
+  <div class="will-you">
+    <h3>So, Arpu... will you stay mine forever?</h3>
+    <div class="will-btns">
+      <button id="yesBtn">Yes, forever ❤️</button>
+      <button id="noBtn">No</button>
+    </div>
+    <div class="will-answer" id="willAnswer">That's a promise now. Forever it is. ✨</div>
+  </div>
+</section>
+
+<footer>MADE WITH ❤️ · FOR ARPU</footer>
+
+<script>
+  // Floating petals/hearts
+  const petalContainer = document.getElementById('petals');
+  const symbols = ['❤️','💜','✨','🌸'];
+  for(let i=0;i<22;i++){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.animationDuration = (8 + Math.random()*10) + 's';
+    p.style.animationDelay = (Math.random()*10) + 's';
+    p.style.fontSize = (14 + Math.random()*14) + 'px';
+    petalContainer.appendChild(p);
+  }
+
+  // Music player
+  const audio = document.getElementById('bgAudio');
+  const playBtn = document.getElementById('playBtn');
+  let playing = false;
+  playBtn.addEventListener('click', () => {
+    if(!playing){
+      audio.play();
+      playBtn.textContent = '❚❚';
+    } else {
+      audio.pause();
+      playBtn.textContent = '▶';
+    }
+    playing = !playing;
+  });
+
+  // Reveal memories on scroll
+  const memories = document.querySelectorAll('.memory');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+  memories.forEach(m => observer.observe(m));
+
+  // Cursor heart trail (throttled)
+  let lastTrail = 0;
+  document.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if(now - lastTrail < 60) return;
+    lastTrail = now;
+    const h = document.createElement('div');
+    h.className = 'trail-heart';
+    h.textContent = Math.random() > 0.5 ? '❤️' : '✧';
+    h.style.left = (e.clientX - 8) + 'px';
+    h.style.top = (e.clientY - 8) + 'px';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 1000);
+  });
+
+  // Flip cards
+  document.querySelectorAll('.reason-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+  });
+
+  // Typewriter letter
+  const letterEl = document.getElementById('letterText');
+  const letterFull = "Arpu, I don't know exactly where life will take us, but I know that I really value the bond we already have. You are someone I genuinely enjoy talking to, laughing with and having around. And lately I've realised that my feelings are a little more than just friendship.";
+  let typed = false;
+  const letterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting && !typed){
+        typed = true;
+        let i = 0;
+        letterEl.innerHTML = '<span class="type-cursor">&nbsp;</span>';
+        const interval = setInterval(() => {
+          i++;
+          const shown = letterFull.slice(0, i).replace('Arpu,', '<span class="name">Arpu</span>,');
+          letterEl.innerHTML = shown + '<span class="type-cursor">&nbsp;</span>';
+          if(i >= letterFull.length){
+            clearInterval(interval);
+            letterEl.innerHTML = letterFull.replace('Arpu,', '<span class="name">Arpu</span>,');
+          }
+        }, 28);
+      }
+    });
+  }, { threshold: 0.4 });
+  letterObserver.observe(letterEl);
+
+  // Will-you: runaway No button
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const willAnswer = document.getElementById('willAnswer');
+  const willBtns = document.querySelector('.will-btns');
+  noBtn.addEventListener('mouseenter', () => {
+    const rect = willBtns.getBoundingClientRect();
+    const maxX = rect.width - noBtn.offsetWidth - 10;
+    const maxY = rect.height - noBtn.offsetHeight - 10;
+    const randX = Math.random() * maxX;
+    const randY = (Math.random() - 0.5) * maxY;
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = randX + 'px';
+    noBtn.style.top = randY + 'px';
+  });
+  yesBtn.addEventListener('click', () => {
+    willAnswer.classList.add('show');
+    yesBtn.style.transform = 'scale(1.15)';
+  });
+</script>
+
+</body>
+</html>
